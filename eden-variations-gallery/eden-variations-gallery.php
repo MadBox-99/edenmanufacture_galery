@@ -14,6 +14,7 @@ define('EDEN_VG_URL', plugin_dir_url(__FILE__));
 
 require_once EDEN_VG_DIR . 'includes/class-cache.php';
 require_once EDEN_VG_DIR . 'includes/class-data.php';
+require_once EDEN_VG_DIR . 'includes/class-rest.php';
 require_once EDEN_VG_DIR . 'includes/class-assets.php';
 require_once EDEN_VG_DIR . 'includes/shortcode-color-grid.php';
 require_once EDEN_VG_DIR . 'includes/shortcode-tiled-gallery.php';
@@ -21,6 +22,7 @@ require_once EDEN_VG_DIR . 'includes/frontend-swatches.php';
 require_once EDEN_VG_DIR . 'includes/frontend-misc.php';
 
 Eden_VG_Cache::init();
+Eden_VG_Rest::init();
 Eden_VG_Assets::init();
 Eden_VG_Color_Grid::init();
 Eden_VG_Tiled_Gallery::init();

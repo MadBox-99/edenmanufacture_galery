@@ -6,19 +6,17 @@
         var $gallery = $('.eden-tiled-gallery').first();
         if (!$gallery.length) return;
 
-        var data;
-        try { data = JSON.parse($gallery.attr('data-variations') || '{}'); }
-        catch (e) { return; }
+        var restBase = $gallery.attr('data-rest-base') || '';
+        if (!restBase) return;
 
         var $form = $('form.variations_form').first();
         if (!$form.length) return;
 
-        $form.on('found_variation', function (event, variation) {
-            if (!variation || !variation.variation_id) return;
-            var imgs = data[variation.variation_id];
-            if (!imgs || !imgs.length) return;
+        var cache = {};
+        var inflight = {};
 
-            // Build via DOM API to avoid HTML injection from any field.
+        function render(imgs) {
+            if (!imgs || !imgs.length) return;
             var frag = document.createDocumentFragment();
             imgs.forEach(function (img) {
                 var tile = document.createElement('div');
@@ -33,6 +31,32 @@
                 frag.appendChild(tile);
             });
             $gallery.empty().append(frag);
+        }
+
+        function fetchVariation(variationId) {
+            if (cache[variationId]) {
+                render(cache[variationId]);
+                return;
+            }
+            if (inflight[variationId]) return;
+            inflight[variationId] = true;
+
+            fetch(restBase + variationId, { credentials: 'same-origin' })
+                .then(function (r) { return r.ok ? r.json() : null; })
+                .then(function (data) {
+                    delete inflight[variationId];
+                    if (!data || !data.images) return;
+                    cache[variationId] = data.images;
+                    render(data.images);
+                })
+                .catch(function () {
+                    delete inflight[variationId];
+                });
+        }
+
+        $form.on('found_variation', function (event, variation) {
+            if (!variation || !variation.variation_id) return;
+            fetchVariation(variation.variation_id);
         });
     });
 })();

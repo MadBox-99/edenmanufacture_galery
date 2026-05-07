@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) exit;
 
 class Eden_VG_Cache {
 
-    const VERSION = 'v1';
+    const VERSION = 'v2';
     const TTL     = DAY_IN_SECONDS;
 
     public static function init() {

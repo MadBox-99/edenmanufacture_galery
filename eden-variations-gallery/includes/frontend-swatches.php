@@ -13,10 +13,14 @@ class Eden_VG_Swatches {
      */
     public static function inline_dynamic_css() {
         if (!function_exists('is_product') || !is_product() || !is_single()) return;
-        global $product;
-        if (!$product || !is_a($product, 'WC_Product') || !$product->is_type('variable')) return;
 
-        $data = Eden_VG_Data::get($product->get_id());
+        // wp_enqueue_scripts runs before the_post(), so the global $product is unreliable here.
+        $product_id = (int) get_queried_object_id();
+        if (!$product_id) return;
+        $product = wc_get_product($product_id);
+        if (!$product || !$product->is_type('variable')) return;
+
+        $data = Eden_VG_Data::get($product_id);
         if (empty($data['colors_seen'])) return;
 
         $rules = [];
