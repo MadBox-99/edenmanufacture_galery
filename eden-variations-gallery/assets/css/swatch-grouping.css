@@ -1,0 +1,32 @@
+.cv-swatch-group-heading {
+    display: block;
+    width: 100%;
+    margin: 20px 0 10px;
+    font-size: 0.9em;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #1a1a1a;
+}
+.cv-swatch-group-heading:first-child {
+    margin-top: 18px;
+}
+
+/* Badge style for Szín / Méret attribute labels */
+.variations th.label label {
+    display: inline-block;
+    background: #555;
+    color: #fff;
+    padding: 3px 10px;
+    font-size: 0.85em;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+.variations .woo-selected-variation-item-name {
+    margin-left: 6px;
+    font-weight: 500;
+}
+.variations tr + tr th.label {
+    padding-top: 22px;
+}
